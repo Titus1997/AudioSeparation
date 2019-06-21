@@ -14,13 +14,13 @@ class ModelConfig:
 
 # Train
 class TrainConfig:
-    CASE = str(ModelConfig.SEQ_LEN) + 'frames_ikala'
+    CASE = 'dsd'
     CKPT_PATH = 'checkpoints/' + CASE
     GRAPH_PATH = 'graphs/' + CASE + '/train'
     DATA_PATH = 'dataset/DSD100/Sources/Dev'
-    LR = 0.01
-    FINAL_STEP = 1000
-    CKPT_STEP = 10
+    LR = 0.1
+    FINAL_STEP = 30
+    CKPT_STEP = 5
     NUM_WAVFILE = 1
     SECONDS = 8.192 # To get 512,512 in melspecto
     RE_TRAIN = True
@@ -32,19 +32,12 @@ class TrainConfig:
         ),
     )
 
-
-# TODO seperating model and case
-# TODO config for each case
 # Eval
 class EvalConfig:
-    # CASE = '1frame'
-    # CASE = '4-frames-masking-layer'
-    CASE = str(ModelConfig.SEQ_LEN) + 'frames_ikala'
+    CASE = 'dsd'
     CKPT_PATH = 'checkpoints/' + CASE
     GRAPH_PATH = 'graphs/' + CASE + '/eval'
-    DATA_PATH = 'dataset/DSD100/ikala/Sources/Dev/051 - AM Contra - Heart Peripheral'
-    # DATA_PATH = 'dataset/mir-1k/Wavfile'
-    # DATA_PATH = 'dataset/ikala'
+    DATA_PATH = 'dataset/DSD100/Sources/Dev'
     GRIFFIN_LIM = False
     GRIFFIN_LIM_ITER = 1000
     NUM_EVAL = 9

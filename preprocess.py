@@ -11,15 +11,6 @@ from os import path
 from config import ModelConfig
 import soundfile as sf
 
-# Batch considered
-def get_random_wav(filenames, sec, sr=ModelConfig.SR):
-    # load wav -> pad if necessary to fit sr*sec -> get random samples with len = sr*sec -> map = do this for all in filenames -> put in np.array
-    print(filenames)
-    src1_src2 = np.array(list(map(lambda f: _sample_range(_pad_wav(librosa.load(f, sr=sr, mono=False)[0], sr, sec), sr, sec), filenames)))
-    mixed = np.array(list(map(lambda f: librosa.to_mono(f), src1_src2)))
-    src1, src2 = src1_src2[:, 0], src1_src2[:, 1]
-    return mixed, src1, src2
-
 def get_wav(dir, sec, sr=ModelConfig.SR):
     vocalswav = 'vocals.wav'
     drumswav = 'drums.wav'
@@ -32,7 +23,6 @@ def get_wav(dir, sec, sr=ModelConfig.SR):
     src1_src2 = np.array(list([src1, src2]))
     mixed = np.array(list(map(lambda f: librosa.to_mono(f), src1_src2)))
     return mixed, src1, src2
-    
 
 # Batch considered
 def to_spectrogram(wav, len_frame=ModelConfig.L_FRAME, len_hop=ModelConfig.L_HOP):
