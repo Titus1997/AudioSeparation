@@ -18,9 +18,9 @@ class TrainConfig:
     CKPT_PATH = 'checkpoints/' + CASE
     GRAPH_PATH = 'graphs/' + CASE + '/train'
     DATA_PATH = 'dataset/DSD100/Sources/Dev'
-    LR = 0.1
-    FINAL_STEP = 30
-    CKPT_STEP = 5
+    LR = 0.005
+    FINAL_STEP = 1200
+    CKPT_STEP = 50
     NUM_WAVFILE = 1
     SECONDS = 8.192 # To get 512,512 in melspecto
     RE_TRAIN = True
@@ -40,7 +40,7 @@ class EvalConfig:
     DATA_PATH = 'dataset/DSD100/Sources/Dev'
     GRIFFIN_LIM = False
     GRIFFIN_LIM_ITER = 1000
-    NUM_EVAL = 9
+    NUM_EVAL = 1
     SECONDS = 60
     RE_EVAL = True
     EVAL_METRIC = False

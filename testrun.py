@@ -17,7 +17,7 @@ def test_run():
     model = Model()
     
     
-    with tf.Session(config=TrainConfig.session_conf) as sess:
+    with tf.Session(config=EvalConfig.session_conf) as sess:
 
         # Initialized, Load state
         sess.run(tf.global_variables_initializer())
@@ -51,9 +51,9 @@ def test_run():
         pred_src1_wav = to_wav(pred_src1_mag, mixed_phase)
         pred_src2_wav = to_wav(pred_src2_mag, mixed_phase)
         
-        write_wav(mixed_wav, '{}/{}'.format(EvalConfig.RESULT_PATH, 'original'))
-        write_wav(pred_src1_wav, '{}/{}'.format(EvalConfig.RESULT_PATH, 'music'))
-        write_wav(pred_src2_wav, '{}/{}'.format(EvalConfig.RESULT_PATH, 'voice'))
+        write_wav(mixed_wav[0], '{}/{}'.format(EvalConfig.RESULT_PATH, 'original'))
+        write_wav(pred_src1_wav[0], '{}/{}'.format(EvalConfig.RESULT_PATH, 'music'))
+        write_wav(pred_src2_wav[0], '{}/{}'.format(EvalConfig.RESULT_PATH, 'voice'))
 
 if __name__ == '__main__':
     test_run()

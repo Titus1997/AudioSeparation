@@ -20,8 +20,7 @@ def get_wav(dir, sec, sr=ModelConfig.SR):
     filenamesrc2 = path.join(path.join(root, dir), drumswav)
     src1 = _sample_range(_pad_wav(librosa.load(filenamesrc1, sr=sr,mono = False)[0], sr, sec), sr, sec)
     src2 = _sample_range(_pad_wav(librosa.load(filenamesrc2, sr=sr,mono = False)[0], sr, sec), sr, sec)
-    src1_src2 = np.array(list([src1, src2]))
-    mixed = np.array(list(map(lambda f: librosa.to_mono(f), src1_src2)))
+    mixed =np.array((src1+src2)/2)
     return mixed, src1, src2
 
 # Batch considered
@@ -64,8 +63,9 @@ def hard_time_freq_mask(target_src, remaining_src):
     mask = np.where(target_src > remaining_src, 1., 0.)
     return mask
 
-def write_wav(data, path, sr=ModelConfig.SR, format='wav', subtype='PCM_16'):
-    sf.write('{}.wav'.format(path), data, sr, format=format, subtype=subtype)
+def write_wav(data, path, sr=ModelConfig.SR, format='WAV', subtype='PCM_16'):
+    #sf.write('{}.wav'.format(path), np.random.randn(10, 2), 44100, 'PCM_16')
+    sf.write('{}.wav'.format(path), data, sr, subtype)
 
 def griffin_lim(mag, len_frame, len_hop, num_iters, phase_angle=None, length=None):
     assert(num_iters > 0)
