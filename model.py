@@ -29,8 +29,8 @@ class Model:
         return self.net()
     
     def _net(self):
-        lstm_cell = tf.nn.rnn_cell.LSTMCell(self.hidden_layer_size, state_is_tuple=True) # can use tf.nn.rnn_cell.GRUCell or tf.nn.rnn_cell.BasicRNNCell instead 
-        rnn_layer = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.LSTMCell(self.hidden_layer_size, state_is_tuple=True) for _ in range(1, self.n_rnn_layer)], state_is_tuple=True)
+        #lstm_cell = tf.nn.rnn_cell.LSTMCell(self.hidden_layer_size, state_is_tuple=True) # can use tf.nn.rnn_cell.GRUCell or tf.nn.rnn_cell.BasicRNNCell instead 
+        rnn_layer = tf.nn.rnn_cell.MultiRNNCell([tf.nn.rnn_cell.LSTMCell(self.hidden_layer_size, state_is_tuple=True, name='lstmcell'+str(i)) for i in range(self.n_rnn_layer)], state_is_tuple=True)
         #rnn_layer = MultiRNNCell(GRUCell(self.hidden_layer_size) for _ in range(1, self.n_rnn_layer))
         rnn_output, rnn_state = tf.nn.dynamic_rnn(rnn_layer, self.x_mixed, dtype=tf.float32)
         

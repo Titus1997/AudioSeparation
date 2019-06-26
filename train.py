@@ -4,27 +4,16 @@ from model import Model
 import tensorflow as tf
 import os
 import shutil
-from dataset import Dataset
+from datas import Datas
 from preprocess import to_spectrogram, get_magnitude
 from config import TrainConfig
 
 import matplotlib as plt
 import librosa.display
 
-
-class Diff(object):
-    def __init__(self, v=0.):
-        self.value = v
-        self.diff = 0.
-
-    def update(self, v):
-        if self.value:
-            diff = (v / self.value - 1)
-            self.diff = diff
-        self.value = v
-
 # TODO multi-gpu
 def train():
+    tf.reset_default_graph()
     # Model
     model = Model()
 
@@ -45,9 +34,8 @@ def train():
         writer = tf.summary.FileWriter(TrainConfig.GRAPH_PATH, sess.graph)
 
         # Input source
-        data = Dataset(TrainConfig.DATA_PATH)
+        data = Datas(TrainConfig.DATA_PATH)
 
-        loss = Diff()
         for step in range(global_step.eval(), TrainConfig.FINAL_STEP): # changed xrange to range for py3
             mixed_wav, src1_wav, src2_wav = data.next_wav(TrainConfig.SECONDS)
 
@@ -65,8 +53,7 @@ def train():
                                      feed_dict={model.x_mixed: mixed_batch, model.y_src1: src1_batch,
                                                 model.y_src2: src2_batch})
 
-            loss.update(l)
-            print('step-{}\td_loss={:2.2f}\tloss={}'.format(step, loss.diff * 100, loss.value))
+            print('For iteration {}\\t loss={}'.format(step, l))
 
             writer.add_summary(summary, global_step=step)
 

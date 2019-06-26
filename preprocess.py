@@ -11,17 +11,24 @@ from os import path
 from config import ModelConfig
 import soundfile as sf
 
-def get_wav(dir, sec, sr=ModelConfig.SR):
+def get_wav(root, dir, sec, sr=ModelConfig.SR):
     vocalswav = 'vocals.wav'
     drumswav = 'drums.wav'
-    root = path.abspath(ModelConfig.DATA_ROOT)
     filenamesrc1 = path.join(path.join(root, dir), vocalswav)
     print(filenamesrc1)
     filenamesrc2 = path.join(path.join(root, dir), drumswav)
+    print(librosa.load(filenamesrc1, sr=sr, mono = False)[0])
     src1 = _sample_range(_pad_wav(librosa.load(filenamesrc1, sr=sr,mono = False)[0], sr, sec), sr, sec)
     src2 = _sample_range(_pad_wav(librosa.load(filenamesrc2, sr=sr,mono = False)[0], sr, sec), sr, sec)
     mixed =np.array((src1+src2)/2)
     return mixed, src1, src2
+
+def get_mixture(root, filename, sr = ModelConfig.SR):
+    filepath = path.join(root, filename)
+    print(filepath)
+    mixture = librosa.load(filepath, sr=sr, mono = False)[0]
+    print(mixture)
+    return np.array(mixture)
 
 # Batch considered
 def to_spectrogram(wav, len_frame=ModelConfig.L_FRAME, len_hop=ModelConfig.L_HOP):

@@ -8,12 +8,13 @@ import tensorflow as tf
 import os
 import shutil
 from model import Model
-from dataset import Dataset
+from datas import Datas
 from preprocess import to_spectrogram, get_magnitude, get_phase, to_wav_mag_only, soft_time_freq_mask, to_wav, write_wav
 from config import TrainConfig, EvalConfig
 
 def test_run():
     
+    tf.reset_default_graph()
     model = Model()
     
     
@@ -22,12 +23,12 @@ def test_run():
         # Initialized, Load state
         sess.run(tf.global_variables_initializer())
         
-        data = Dataset(EvalConfig.DATA_PATH)
-        
-        model.load_state(sess, TrainConfig.CKPT_PATH)
+        data = Datas(EvalConfig.DATA_PATH)
+        model.load_state(sess, EvalConfig.CKPT_PATH)
         
         mixed_wav, src1_wav, src2_wav = data.next_wav(EvalConfig.SECONDS)
 
+        print(src1_wav)
         
         mixed_spec = to_spectrogram(mixed_wav)
         mixed_mag = get_magnitude(mixed_spec)
